@@ -44,5 +44,27 @@ namespace OrangeHRM.Test
             // Verify message can't login is displayed
             loginPage.IsMessErrorDisplayed();
         }
+
+        [TestMethod("TC02: Verify unsuccesful login with valid username and invalid password")]
+        public void Verif_Negative_PasswordTest()
+        {
+            // Type incorrect username and correct password -> click Login
+            loginPage.EnterUsernamePassword("Admin", "incorrectPass");
+            loginPage.ClickButtonLogin();
+
+            // Verify message can't login is displayed
+            loginPage.IsMessErrorDisplayed();
+        }
+
+        [TestMethod("TC03: Verify username and password is required")]
+        public void Verify_UsernamePassword_Required()
+        {
+            // Click Login
+            loginPage.ClickButtonLogin();
+
+            // Verify warning username and password is required
+            loginPage.IstextUserNameRequiredDisplayed();
+            loginPage.IstextPasswordRequiredDisplayed();
+        }
     }
 }

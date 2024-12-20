@@ -17,6 +17,10 @@ namespace OrangeHRM.Pages
 
         private IWebElement messError => driver.FindElement(By.XPath("//div[@role = 'alert']"));
 
+        private IWebElement textUserNameRequired => driver.FindElement(By.XPath("//div[@class='oxd-form-row'][1]//span"));
+
+        private IWebElement textPasswordRequired => driver.FindElement(By.XPath("//div[@class='oxd-form-row'][2]//span"));
+
         // Method interact
         // Input value into Username and Password
         public void Goto_LoginPage()
@@ -50,6 +54,16 @@ namespace OrangeHRM.Pages
         public bool IsMessErrorDisplayed()
         {
             return messError.Displayed;
+        }
+
+        public bool IstextUserNameRequiredDisplayed()
+        {
+            return textUserNameRequired.Displayed;
+        }
+
+        public bool IstextPasswordRequiredDisplayed()
+        {
+            return textPasswordRequired.Displayed;
         }
     }
 }

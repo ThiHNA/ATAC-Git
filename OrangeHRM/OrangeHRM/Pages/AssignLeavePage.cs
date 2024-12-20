@@ -1,5 +1,6 @@
 ﻿using FluentAssert;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace OrangeHRM.Pages
 {
@@ -17,7 +18,7 @@ namespace OrangeHRM.Pages
         private IWebElement fieldEmpName => driver.FindElement(By.XPath("//label[text() = 'Employee Name']/../..//input"));
 
         private IWebElement dropdownLeaveType => driver.FindElement(By.XPath("//label[text() = 'Leave Type']/../..//div[@tabindex = '0']"));
-
+         
         private IWebElement textLeaveBalance => driver.FindElement(By.XPath("//div[@class='orangehrm-leave-balance']/..//p"));
 
         private IWebElement fieldFromDate => driver.FindElement(By.XPath("//label[text() = 'From Date']/../..//input"));
@@ -25,6 +26,12 @@ namespace OrangeHRM.Pages
         private IWebElement fieldToDate => driver.FindElement(By.XPath("//label[text() = 'To Date']/../..//input"));
 
         private IWebElement textareaComment => driver.FindElement(By.XPath("//textarea"));
+
+        private IWebElement dropdownDuration => driver.FindElement(By.XPath("//label[text() = 'Duration']/../..//div[@class='oxd-select-text-input']"));
+
+        private IWebElement buttonAssign => driver.FindElement(By.XPath("//button[@type='submit']"));
+
+        private IWebElement buttonConfirmOk => driver.FindElement(By.XPath("//button[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-button-margin']"));
 
 
         // Method Interact
@@ -59,6 +66,43 @@ namespace OrangeHRM.Pages
             def_CommentValue.ShouldContain(def_Comment);
         }
 
-        //public void GetDefaultValue_
+        public void EnterEmployeeName(string empName)
+        {
+            fieldEmpName.SendKeys(empName);
+            IWebElement option = driver.FindElement(By.XPath($"//div[@role='listbox']"));
+            option.Click();
+        }
+
+        public void EnterFromDate_ToDate(string fromDate, string toDate)
+        {
+            fieldFromDate.SendKeys(fromDate);
+            if (toDate != null)
+            {
+                fieldToDate.Clear();
+                fieldToDate.SendKeys(toDate);
+            }
+        }
+
+        public void EnterComment(string comment)
+        {
+            textareaComment.SendKeys(comment);
+        }
+
+        public void ChooseDropDownLeaveType(string leaveTypeValue)
+        {
+            dropdownLeaveType.Click();
+            IWebElement option = driver.FindElement(By.XPath($"//div[@role='listbox']//span[text()='{leaveTypeValue}']"));
+            option.Click();
+        }
+
+        public void ClickButtonAssign()
+        {
+            buttonAssign.Click();
+        }
+
+        public void AcceptAssignLeave()
+        {
+            buttonConfirmOk.Click();
+        }
     }
 }
