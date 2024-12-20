@@ -1,4 +1,5 @@
 ﻿using FluentAssert;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OrangeHRM.Pages;
 
@@ -8,15 +9,16 @@ namespace OrangeHRM.Test
     public class LoginTest : BaseTest
     {
         private LoginPage loginPage;
+        private DashboardPage dashboardPage;
 
         [TestInitialize]
         public void SetupLogin()
         {
             loginPage = new LoginPage(driver);
+            dashboardPage = new DashboardPage(driver);
 
-            // Go to Url
-            driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+            // Go to OrangeHRM Page
+            loginPage.Goto_LoginPage();
         }
 
         [TestMethod("TC01: Verify succesful login with valid username and password")]
@@ -26,10 +28,14 @@ namespace OrangeHRM.Test
 
             // Verify go to Dashboard Page
             driver.Url.ShouldContain("/dashboard/index");
+
+            // Set explicit wait
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
+            wait.Until(d => dashboardPage.IsAttendanceChartDisplayed());
         }
 
         [TestMethod("TC02: Verify unsuccesful login with invalid username and valid password")]
-        public void Verif_Negative_UsernameTest()
+        public void Verify_Negative_UsernameTest()
         {
             // Type incorrect username and correct password -> click Login
             loginPage.EnterUsernamePassword("IncorrectUser", "admin123");

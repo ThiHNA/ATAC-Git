@@ -4,22 +4,29 @@ using OpenQA.Selenium.Chrome;
 namespace OrangeHRM.Test
 {
     [TestClass]
-    public class BaseTest
+    public class BaseTest : IDisposable
     {
-        protected static IWebDriver driver;
+        protected IWebDriver driver;
 
-        [ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
-        public static void SetupBrowser(TestContext testContext)
+        //[ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
+        //public static void SetupBrowser(TestContext testContext)
+        public BaseTest()
         {
             // Open Chrome driver
             driver = new ChromeDriver();
 
             // Set implicit wait
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
         }
 
-        [ClassCleanup(InheritanceBehavior.BeforeEachDerivedClass)]
-        public static void CleanupBrowser()
+        //[ClassCleanup(InheritanceBehavior.BeforeEachDerivedClass)]
+        //public static void CleanupBrowser()
+        //{
+        //    // Close browser
+        //    driver.Quit();
+        //}
+
+        public void Dispose()
         {
             driver.Quit();
         }
