@@ -33,6 +33,8 @@ namespace OrangeHRM.Pages
 
         private IWebElement buttonConfirmOk => driver.FindElement(By.XPath("//button[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-button-margin']"));
 
+        private IWebElement messSuccess => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--success oxd-toast-container--toast']"));
+
 
         // Method Interact
         public void Goto_AssignLeavePage() 
@@ -69,7 +71,10 @@ namespace OrangeHRM.Pages
         public void EnterEmployeeName(string empName)
         {
             fieldEmpName.SendKeys(empName);
-            IWebElement option = driver.FindElement(By.XPath($"//div[@role='listbox']"));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
+            IWebElement option = wait.Until(driver => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empName}')]")));
+            //fieldEmpName.SendKeys(Keys.ArrowDown);
+            //fieldEmpName.SendKeys()
             option.Click();
         }
 
@@ -103,6 +108,11 @@ namespace OrangeHRM.Pages
         public void AcceptAssignLeave()
         {
             buttonConfirmOk.Click();
+        }
+
+        public bool isMessageSuccessDisplay()
+        {
+            return messSuccess.Displayed;
         }
     }
 }

@@ -39,12 +39,16 @@ namespace OrangeHRM.Test
         public void Verify_Positive_AssignLeaveTest()
         {
             assignLeavePage.EnterEmployeeName("Ranga");
-            assignLeavePage.ChooseDropDownLeaveType("CAN - Vacation");
-            assignLeavePage.EnterFromDate_ToDate("2024-17-12", "");
+            assignLeavePage.ChooseDropDownLeaveType("CAN - FMLA");
+            assignLeavePage.EnterFromDate_ToDate("2024-30-12", "");
             //assignLeavePage.ChooseDuration("Full Day");
-            assignLeavePage.EnterComment("Leave for vacation");
+            assignLeavePage.EnterComment("Leave to takecare child");
             assignLeavePage.ClickButtonAssign();
             assignLeavePage.AcceptAssignLeave();
+
+            // Verify message success is display
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
+            wait.Until(driver => assignLeavePage.isMessageSuccessDisplay());
         }
     }
 }
