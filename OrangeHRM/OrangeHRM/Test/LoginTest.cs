@@ -1,6 +1,4 @@
-﻿using FluentAssert;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+﻿using Automation.Core.Helpers;
 using OrangeHRM.Pages;
 
 namespace OrangeHRM.Test
@@ -10,12 +8,14 @@ namespace OrangeHRM.Test
     {
         private LoginPage loginPage;
         private DashboardPage dashboardPage;
+        private BasePage basePage;
 
         [TestInitialize]
         public void SetupLogin()
         {
             loginPage = new LoginPage(driver);
             dashboardPage = new DashboardPage(driver);
+            basePage = new BasePage(driver);
 
             // Go to OrangeHRM Page
             loginPage.Goto_LoginPage();
@@ -24,21 +24,24 @@ namespace OrangeHRM.Test
         [TestMethod("TC01: Verify succesful login with valid username and password")]
         public void Verify_Positive_LoginTest()
         {
+            // Login with correct username and password
             loginPage.Login_Successful();
 
-            // Verify go to Dashboard Page
-            driver.Url.ShouldContain("/dashboard/index");
-
-            // Set explicit wait
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
-            wait.Until(d => dashboardPage.IsAttendanceChartDisplayed());
+            // Set explicit wait and verify Dashboard Page is loaded
+            basePage.WaitUntil(driver => dashboardPage.IsAttendanceChartDisplayed(), 15);
         }
 
         [TestMethod("TC02: Verify unsuccesful login with invalid username and valid password")]
         public void Verify_Negative_UsernameTest()
         {
+            // Generate a random invalid username
+            string invalidUsername = "User" + new Random().Next(1000, 9999);
+
+            // Read configuration to get valid password
+            string password = ConfigurationHelper.GetValue<string>("password");
+
             // Type incorrect username and correct password -> click Login
-            loginPage.EnterUsernamePassword("IncorrectUser", "admin123");
+            loginPage.EnterUsernamePassword(invalidUsername, password);
             loginPage.ClickButtonLogin();
 
             // Verify message can't login is displayed
@@ -48,8 +51,14 @@ namespace OrangeHRM.Test
         [TestMethod("TC02: Verify unsuccesful login with valid username and invalid password")]
         public void Verif_Negative_PasswordTest()
         {
+            // Read configuration to get valid username
+            string username = ConfigurationHelper.GetValue<string>("username");
+
+            // Generate a random invalid password
+            string invalidPassword = "admin" + new Random().Next(1000, 9999);
+
             // Type incorrect username and correct password -> click Login
-            loginPage.EnterUsernamePassword("Admin", "incorrectPass");
+            loginPage.EnterUsernamePassword(username, invalidPassword);
             loginPage.ClickButtonLogin();
 
             // Verify message can't login is displayed
@@ -59,10 +68,10 @@ namespace OrangeHRM.Test
         [TestMethod("TC03: Verify username and password is required")]
         public void Verify_UsernamePassword_Required()
         {
-            // Click Login
+            // Do not input username and password, then click Login
             loginPage.ClickButtonLogin();
 
-            // Verify warning username and password is required
+            // Verify text "Required" of username and password is displayed
             loginPage.IstextUserNameRequiredDisplayed();
             loginPage.IstextPasswordRequiredDisplayed();
         }

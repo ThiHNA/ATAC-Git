@@ -37,79 +37,94 @@ namespace OrangeHRM.Pages
 
 
         // Method Interact
+        // Navigate to Assign Page
         public void Goto_AssignLeavePage() 
         {
             topMenuAssignLeave.Click();
         }
 
+        // Check Assign Leave title is displayed
         public bool IsAssignLeaveTitleDisplayed()
         {
             return assignLeaveTitle.Displayed;
         }
-
-        public void GetDefaultValue(string def_EmpName, string def_LeaveType, string def_LeaveBalance, string def_DateTime, string def_Comment)
+       
+        // Get list of default value 
+        public Dictionary<string, string> GetDefaultValue()
         {
+            // Get default value of Employee Name
             string def_PlaceholderValue = fieldEmpName.GetDomAttribute("placeholder");
-            def_PlaceholderValue.ShouldContain(def_EmpName);
-
+            // Get default value of Leave Type
             string def_DropdownValue = dropdownLeaveType.Text;
-            def_DropdownValue.ShouldContain(def_LeaveType);
-
+            // Get default value of Leave Balance
             string def_TextValue = textLeaveBalance.Text;
-            def_TextValue.ShouldContain(def_LeaveBalance);
-
+            // Get default value of From Date
             string def_FromDateValue = fieldFromDate.GetDomAttribute("placeholder");
-            def_FromDateValue.ShouldContain(def_DateTime);
-
+            // Get default value of To Date
             string def_ToDateValue = fieldToDate.GetDomAttribute("placeholder");
-            def_ToDateValue.ShouldContain(def_DateTime);
-
+            // Get default value of Comment
             string def_CommentValue = textareaComment.Text;
-            def_CommentValue.ShouldContain(def_Comment);
+
+            // Add default value to list
+            Dictionary<string, string> def_List = new Dictionary<string, string>();
+            def_List["def_PlaceholderValue"] = def_PlaceholderValue;
+            def_List["def_DropdownValue"] = def_DropdownValue;
+            def_List["def_TextValue"] = def_TextValue;
+            def_List["def_FromDateValue"] = def_FromDateValue;
+            def_List["def_ToDateValue"] = def_ToDateValue;
+            def_List["def_CommentValue"] = def_CommentValue;
+
+            return def_List;
         }
 
+        // Input value into field Employee Name
         public void EnterEmployeeName(string empName)
         {
+            // Enter Employee Name
             fieldEmpName.SendKeys(empName);
+
+            // Wait until suggest Employee is displayed and click
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
             IWebElement option = wait.Until(driver => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empName}')]")));
-            //fieldEmpName.SendKeys(Keys.ArrowDown);
-            //fieldEmpName.SendKeys()
             option.Click();
         }
 
+        // Input value into field From Date and To Date
         public void EnterFromDate_ToDate(string fromDate, string toDate)
         {
             fieldFromDate.SendKeys(fromDate);
-            if (toDate != null)
-            {
-                fieldToDate.Clear();
-                fieldToDate.SendKeys(toDate);
-            }
+            fieldToDate.SendKeys(toDate);
         }
 
+        // Input value into textarea Comment
         public void EnterComment(string comment)
         {
             textareaComment.SendKeys(comment);
         }
 
+        // Chose value from Leave Type
         public void ChooseDropDownLeaveType(string leaveTypeValue)
         {
+            // Click to show value of Leave Type
             dropdownLeaveType.Click();
+            // Find and click value option match
             IWebElement option = driver.FindElement(By.XPath($"//div[@role='listbox']//span[text()='{leaveTypeValue}']"));
             option.Click();
         }
 
+        // Click on button Assign
         public void ClickButtonAssign()
         {
             buttonAssign.Click();
         }
 
+        // Click on button Ok of Alert Confirm
         public void AcceptAssignLeave()
         {
             buttonConfirmOk.Click();
         }
 
+        // Check Message Success is displayed
         public bool isMessageSuccessDisplay()
         {
             return messSuccess.Displayed;

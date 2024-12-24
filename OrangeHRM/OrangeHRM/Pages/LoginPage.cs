@@ -23,12 +23,14 @@ namespace OrangeHRM.Pages
         private IWebElement textPasswordRequired => driver.FindElement(By.XPath("//div[@class='oxd-form-row'][2]//span"));
 
         // Method interact
-        // Input value into Username and Password
+        // Navigate to url page
         public void Goto_LoginPage()
         {
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(ConfigurationHelper.GetValue<string>("url"));
         }
+
+        // Input value into Username and Password
         public void EnterUsernamePassword(string username, string password)
         {
             fieldUsername.SendKeys(username);
@@ -41,12 +43,14 @@ namespace OrangeHRM.Pages
             buttonLogin.Click();
         }
 
-        // Login into Orange page
+        // Login to Orange page
         public void Login_Successful()
         {
+            // Read configuration to get username and password
             string username = ConfigurationHelper.GetValue<string>("username");
             string password = ConfigurationHelper.GetValue<string>("password");
 
+            // Type username and password, then click Login
             EnterUsernamePassword(username, password);
             ClickButtonLogin();
         }
@@ -57,11 +61,13 @@ namespace OrangeHRM.Pages
             return messError.Displayed;
         }
 
+        // Check message Required of Username is displayed
         public bool IstextUserNameRequiredDisplayed()
         {
             return textUserNameRequired.Displayed;
         }
 
+        // Check message Required of Password is displayed
         public bool IstextPasswordRequiredDisplayed()
         {
             return textPasswordRequired.Displayed;

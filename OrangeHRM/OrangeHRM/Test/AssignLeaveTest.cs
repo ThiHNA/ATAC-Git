@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Support.UI;
+﻿using FluentAssert;
+using OpenQA.Selenium.Support.UI;
 using OrangeHRM.Pages;
 
 namespace OrangeHRM.Test
@@ -9,6 +10,7 @@ namespace OrangeHRM.Test
         private LoginPage loginPage;
         private DashboardPage dashboardPage;
         private AssignLeavePage assignLeavePage;
+        private BasePage basePage;
 
         [TestInitialize]
         public void SetupAssignLeave()
@@ -16,13 +18,16 @@ namespace OrangeHRM.Test
             loginPage = new LoginPage(driver);
             dashboardPage = new DashboardPage(driver);
             assignLeavePage = new AssignLeavePage(driver);
+            basePage = new BasePage(driver);
 
-            // Login
+            // Navigate to Login Page
             loginPage.Goto_LoginPage();
+            // Login into Page
             loginPage.Login_Successful();
 
-            // Go to Assign Leave Page
+            // Navigate to Leave from Left Menu
             dashboardPage.Goto_LeavePage();
+            // Navigate to Assign Leave Page from Top Menu
             assignLeavePage.Goto_AssignLeavePage();
 
             //Verify this is AssignLeave Page
@@ -32,23 +37,40 @@ namespace OrangeHRM.Test
         [TestMethod("TC01: Verify default value")]
         public void Verify_DefaultValue_AssignLeave()
         {
-            assignLeavePage.GetDefaultValue("Type for hints...", "-- Select --", "0.00 Day(s)", "yyyy-dd-mm", "");
+            Dictionary<string, string> defaultValueDict = assignLeavePage.GetDefaultValue();
+            // Verify default value of Employee Name
+            defaultValueDict["def_PlaceholderValue"].ShouldBeEqualTo("Type for hints...");
+            // Verify default value of Leave Type
+            defaultValueDict["def_DropdownValue"].ShouldBeEqualTo("-- Select --");
+            // Verify default value of Leave Balance
+            defaultValueDict["def_TextValue"].ShouldBeEqualTo("0.00 Day(s)");
+            // Verify default value of From Date
+            defaultValueDict["def_FromDateValue"].ShouldBeEqualTo("yyyy-dd-mm");
+            // Verify default value of To Date
+            defaultValueDict["def_ToDateValue"].ShouldBeEqualTo("yyyy-dd-mm");
+            // Verify default value of Comment
+            defaultValueDict["def_CommentValue"].ShouldBeEqualTo("");
+
         }
 
         [TestMethod("TC02: Verify assign leave for emp success")]
         public void Verify_Positive_AssignLeaveTest()
         {
+            // Input value into Employee Name
             assignLeavePage.EnterEmployeeName("Ranga");
+            // Chose value option of Leave Type
             assignLeavePage.ChooseDropDownLeaveType("CAN - FMLA");
+            // Input value into From Date and To Date
             assignLeavePage.EnterFromDate_ToDate("2024-30-12", "");
-            //assignLeavePage.ChooseDuration("Full Day");
+            // Input value into Comment
             assignLeavePage.EnterComment("Leave to takecare child");
+            // Click button Assign
             assignLeavePage.ClickButtonAssign();
+            // Click button Ok on alert Confirm
             assignLeavePage.AcceptAssignLeave();
 
             // Verify message success is display
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
-            wait.Until(driver => assignLeavePage.isMessageSuccessDisplay());
+            basePage.WaitUntil(driver => assignLeavePage.isMessageSuccessDisplay(), 100);
         }
     }
 }

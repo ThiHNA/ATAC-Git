@@ -11,11 +11,19 @@ namespace OrangeHRM.Pages
             driver = _driver;
         }
 
-        public void WaitUntil(string xpath, int time)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
-            wait.Until(d => driver.FindElement(By.XPath(xpath)));
-        }
+        // Web Element
+        private IWebElement leftMenuItemLeave => driver.FindElement(By.XPath("//span[text() = 'Leave']/.."));
 
+
+        // Explicit wait common
+        public void WaitUntil(Func<IWebDriver, bool> condition, int timeInSeconds)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeInSeconds));
+            wait.Until(condition);
+        }
+        public void Goto_LeavePage()
+        {
+            leftMenuItemLeave.Click();
+        }
     }
 }

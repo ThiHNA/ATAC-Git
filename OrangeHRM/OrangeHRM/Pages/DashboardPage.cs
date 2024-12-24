@@ -11,17 +11,11 @@ namespace OrangeHRM.Pages
         // Web Element
         private IWebElement attendanceChart => driver.FindElement(By.XPath("//div[@class = 'emp-attendance-chart']"));
 
-        private IWebElement leftMenuItemLeave => driver.FindElement(By.XPath("//span[text() = 'Leave']/.."));
-
         // Method Interact
+        // Check Attendance Chart is displayed
         public bool IsAttendanceChartDisplayed()
         {
             return attendanceChart.Displayed;
-        }
-
-        public void Goto_LeavePage()
-        {
-            leftMenuItemLeave.Click();
         }
     }
 }
