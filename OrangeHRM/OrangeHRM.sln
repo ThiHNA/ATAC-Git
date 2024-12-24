@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrangeHRM", "OrangeHRM\OrangeHRM.csproj", "{E0A3F71D-E074-418F-96B4-4EF4431E2781}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automation.Core", "Automation.Core\Automation.Core.csproj", "{589EC44E-3579-4F45-B750-4091FEF50546}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automation.WebDriver", "Automation.WebDriver\Automation.WebDriver.csproj", "{09CBDFA2-37C1-4CA1-8184-92490C425C2B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0A3F71D-E074-418F-96B4-4EF4431E2781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0A3F71D-E074-418F-96B4-4EF4431E2781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0A3F71D-E074-418F-96B4-4EF4431E2781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0A3F71D-E074-418F-96B4-4EF4431E2781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{589EC44E-3579-4F45-B750-4091FEF50546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589EC44E-3579-4F45-B750-4091FEF50546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589EC44E-3579-4F45-B750-4091FEF50546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589EC44E-3579-4F45-B750-4091FEF50546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09CBDFA2-37C1-4CA1-8184-92490C425C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09CBDFA2-37C1-4CA1-8184-92490C425C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09CBDFA2-37C1-4CA1-8184-92490C425C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09CBDFA2-37C1-4CA1-8184-92490C425C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
