@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Automation.Core.Helpers;
+using OpenQA.Selenium;
 
 namespace OrangeHRM.Pages
 {
@@ -26,7 +27,8 @@ namespace OrangeHRM.Pages
         public void Goto_LoginPage()
         {
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+            driver.Navigate().GoToUrl(ConfigurationHelper.GetValue<string>("url"));
+            //driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
         }
         public void EnterUsernamePassword(string username, string password)
         {
@@ -43,9 +45,11 @@ namespace OrangeHRM.Pages
         // Login into Orange page
         public void Login_Successful()
         {
+            //string username = ConfigurationHelper.GetValue<string>("username");
+            //string password = ConfigurationHelper.GetValue<string>("password");
+            
             string username = "Admin";
             string password = "admin123";
-
             EnterUsernamePassword(username, password);
             ClickButtonLogin();
         }

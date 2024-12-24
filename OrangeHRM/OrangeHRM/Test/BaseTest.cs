@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System.Configuration;
+using Automation.Core.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace OrangeHRM.Test
@@ -7,24 +9,15 @@ namespace OrangeHRM.Test
     public class BaseTest : IDisposable
     {
         protected IWebDriver driver;
-
-        //[ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
-        //public static void SetupBrowser(TestContext testContext)
         public BaseTest()
         {
-            // Open Chrome driver
+            // Read configuration and init browser
+            string browserType = ConfigurationHelper.GetValue<string>("browser");
+            int timeout = ConfigurationHelper.GetValue<int>("timeout");
             driver = new ChromeDriver();
 
-            // Set implicit wait
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-        }
 
-        //[ClassCleanup(InheritanceBehavior.BeforeEachDerivedClass)]
-        //public static void CleanupBrowser()
-        //{
-        //    // Close browser
-        //    driver.Quit();
-        //}
+        }
 
         public void Dispose()
         {
