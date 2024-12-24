@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using Automation.Core.Helpers;
+using Automation.WebDriver;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -14,7 +15,7 @@ namespace OrangeHRM.Test
             // Read configuration and init browser
             string browserType = ConfigurationHelper.GetValue<string>("browser");
             int timeout = ConfigurationHelper.GetValue<int>("timeout");
-            driver = new ChromeDriver();
+            driver = DriverFactory.InitBrowser(browserType, timeout);
 
 
         }

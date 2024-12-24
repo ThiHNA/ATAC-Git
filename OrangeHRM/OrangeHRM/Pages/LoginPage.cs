@@ -28,7 +28,6 @@ namespace OrangeHRM.Pages
         {
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(ConfigurationHelper.GetValue<string>("url"));
-            //driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
         }
         public void EnterUsernamePassword(string username, string password)
         {
@@ -45,11 +44,9 @@ namespace OrangeHRM.Pages
         // Login into Orange page
         public void Login_Successful()
         {
-            //string username = ConfigurationHelper.GetValue<string>("username");
-            //string password = ConfigurationHelper.GetValue<string>("password");
-            
-            string username = "Admin";
-            string password = "admin123";
+            string username = ConfigurationHelper.GetValue<string>("username");
+            string password = ConfigurationHelper.GetValue<string>("password");
+
             EnterUsernamePassword(username, password);
             ClickButtonLogin();
         }
