@@ -1,4 +1,5 @@
 ﻿using Automation.Core.Helpers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OrangeHRM.Pages;
 
 namespace OrangeHRM.Test
@@ -27,6 +28,10 @@ namespace OrangeHRM.Test
             // Login with correct username and password
             loginPage.Login_Successful();
 
+            // Log info
+            reportHelper.LogMessage("Info", "Login with username: " + ConfigurationHelper.GetValue<string>("username"));
+            reportHelper.LogMessage("Info", "Login with password: " + ConfigurationHelper.GetValue<string>("password"));
+
             // Set explicit wait and verify Dashboard Page is loaded
             basePage.WaitUntil(driver => dashboardPage.IsAttendanceChartDisplayed(), 15);
         }
@@ -39,6 +44,10 @@ namespace OrangeHRM.Test
 
             // Read configuration to get valid password
             string password = ConfigurationHelper.GetValue<string>("password");
+
+            // Log info
+            reportHelper.LogMessage("Info", "Login with username: " + invalidUsername);
+            reportHelper.LogMessage("Info", "Login with password: " + password);
 
             // Type incorrect username and correct password -> click Login
             loginPage.EnterUsernamePassword(invalidUsername, password);
@@ -56,6 +65,10 @@ namespace OrangeHRM.Test
 
             // Generate a random invalid password
             string invalidPassword = "admin" + new Random().Next(1000, 9999);
+
+            // Log info
+            reportHelper.LogMessage("Info", "Login with username: " + username);
+            reportHelper.LogMessage("Info", "Login with password: " + invalidPassword);
 
             // Type incorrect username and correct password -> click Login
             loginPage.EnterUsernamePassword(username, invalidPassword);

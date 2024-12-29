@@ -59,7 +59,7 @@ namespace OrangeHRM.Test
             // Input value into Employee Name
             assignLeavePage.EnterEmployeeName("Ranga");
             // Chose value option of Leave Type
-            assignLeavePage.ChooseDropDownLeaveType("CAN - FMLA");
+            assignLeavePage.ChooseDropDownLeaveType("CAN - Personal");
             // Input value into From Date and To Date
             assignLeavePage.EnterFromDate_ToDate("2024-30-12", "");
             // Input value into Comment

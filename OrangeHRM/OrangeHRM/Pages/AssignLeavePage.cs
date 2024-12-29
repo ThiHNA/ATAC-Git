@@ -35,6 +35,9 @@ namespace OrangeHRM.Pages
 
         private IWebElement messSuccess => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--success oxd-toast-container--toast']"));
 
+        private Func<string, IWebElement> OptionLeaveType => leaveTypeValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[text()='{leaveTypeValue}']"));
+
+        private Func<string, IWebElement> OptionEmpName => empNameValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empNameValue}')]"));
 
         // Method Interact
         // Navigate to Assign Page
@@ -85,7 +88,7 @@ namespace OrangeHRM.Pages
 
             // Wait until suggest Employee is displayed and click
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
-            IWebElement option = wait.Until(driver => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empName}')]")));
+            IWebElement option = wait.Until(driver => OptionEmpName(empName));
             option.Click();
         }
 
@@ -107,9 +110,8 @@ namespace OrangeHRM.Pages
         {
             // Click to show value of Leave Type
             dropdownLeaveType.Click();
-            // Find and click value option match
-            IWebElement option = driver.FindElement(By.XPath($"//div[@role='listbox']//span[text()='{leaveTypeValue}']"));
-            option.Click();
+            // Click value option match
+            OptionLeaveType(leaveTypeValue).Click();
         }
 
         // Click on button Assign
