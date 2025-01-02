@@ -1,5 +1,6 @@
 ﻿using FluentAssert;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace OrangeHRM.Pages
@@ -11,33 +12,71 @@ namespace OrangeHRM.Pages
         }
 
         // Web Element
+        // Tab Assign Leave on top menu
         private IWebElement topMenuAssignLeave => driver.FindElement(By.XPath("//a[text() = 'Assign Leave']"));
 
+        // Title Assign Leave
         private IWebElement assignLeaveTitle => driver.FindElement(By.XPath("//h6[text()= 'Assign Leave']"));
 
+        // Textbox Employee Name
         private IWebElement fieldEmpName => driver.FindElement(By.XPath("//label[text() = 'Employee Name']/../..//input"));
 
+        // Listbox Employee Name
+        private Func<string, IWebElement> OptionEmpName => empNameValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empNameValue}')]"));
+
+        // Message required Employee Name
+        private IWebElement messRequiredEmpName => driver.FindElement(By.XPath("//label[text() = 'Employee Name']/../../span[text() = 'Required']"));
+
+        // Dropdown Leave Type
         private IWebElement dropdownLeaveType => driver.FindElement(By.XPath("//label[text() = 'Leave Type']/../..//div[@tabindex = '0']"));
-         
-        private IWebElement textLeaveBalance => driver.FindElement(By.XPath("//div[@class='orangehrm-leave-balance']/..//p"));
 
-        private IWebElement fieldFromDate => driver.FindElement(By.XPath("//label[text() = 'From Date']/../..//input"));
-
-        private IWebElement fieldToDate => driver.FindElement(By.XPath("//label[text() = 'To Date']/../..//input"));
-
-        private IWebElement textareaComment => driver.FindElement(By.XPath("//textarea"));
-
-        private IWebElement dropdownDuration => driver.FindElement(By.XPath("//label[text() = 'Duration']/../..//div[@class='oxd-select-text-input']"));
-
-        private IWebElement buttonAssign => driver.FindElement(By.XPath("//button[@type='submit']"));
-
-        private IWebElement buttonConfirmOk => driver.FindElement(By.XPath("//button[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-button-margin']"));
-
-        private IWebElement messSuccess => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--success oxd-toast-container--toast']"));
-
+        // Listbox Leave Type
         private Func<string, IWebElement> OptionLeaveType => leaveTypeValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[text()='{leaveTypeValue}']"));
 
-        private Func<string, IWebElement> OptionEmpName => empNameValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{empNameValue}')]"));
+        // Message required Leave Type
+        private IWebElement messRequiredLeaveType => driver.FindElement(By.XPath("//label[text() = 'Leave Type']/../../span[text() = 'Required']"));
+
+        // Text Leave Balance
+        private IWebElement textLeaveBalance => driver.FindElement(By.XPath("//div[@class='orangehrm-leave-balance']/..//p"));
+
+        // Textbox From Date
+        private IWebElement fieldFromDate => driver.FindElement(By.XPath("//label[text() = 'From Date']/../..//input"));
+
+        // Message Required From Date
+        private IWebElement messRequiredFromDate => driver.FindElement(By.XPath("//label[text() = 'From Date']/../../span[text() = 'Required']"));
+
+        // Textbox To Date
+        private IWebElement fieldToDate => driver.FindElement(By.XPath("//label[text() = 'To Date']/../..//input"));
+
+        // Title To Date
+        private IWebElement textToDate => driver.FindElement(By.XPath("//label[text() = 'To Date']"));
+
+        // Message Required To Date
+        private IWebElement messRequiredToDate => driver.FindElement(By.XPath("//label[text() = 'To Date']/../../span[text() = 'Required']"));
+
+        // Dropdown Partical Days
+        private IWebElement dropdownPartialDays => driver.FindElement(By.XPath("//label[text() = 'Partial Days']/../..//div[@tabindex = '0']"));
+
+        // Listbox Partical Days
+        private Func<string, IWebElement> OptionPartialDays => partialDayValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{partialDayValue}')]"));
+
+        // Dropdown Duration
+        private IWebElement dropdownDuration => driver.FindElement(By.XPath("//label[text() = 'Duration']/../..//div[@class='oxd-select-text-input']"));
+
+        // Listbox Duration
+        private Func<string, IWebElement> OptionDuration => durationValue => driver.FindElement(By.XPath($"//div[@role='listbox']//span[contains(text(), '{durationValue}')]"));
+
+        // Textarea Comment
+        private IWebElement textareaComment => driver.FindElement(By.XPath("//textarea"));
+
+        // Button Assign
+        private IWebElement buttonAssign => driver.FindElement(By.XPath("//button[@type='submit']"));
+
+        // Button OK
+        private IWebElement buttonConfirmOk => driver.FindElement(By.XPath("//button[@class='oxd-button oxd-button--medium oxd-button--secondary orangehrm-button-margin']"));
+
+        // Message Success
+        private IWebElement messSuccess => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--success oxd-toast-container--toast']"));
 
         // Method Interact
         // Navigate to Assign Page
@@ -98,9 +137,13 @@ namespace OrangeHRM.Pages
             fieldFromDate.SendKeys(fromDate);
             if (toDate != null)
             {
-                fieldToDate.Clear();
+                fieldToDate.SendKeys(Keys.Control + "a");
+                fieldToDate.SendKeys(Keys.Delete);
+                fieldToDate.SendKeys(toDate);
             }
-            fieldToDate.SendKeys(toDate);
+            
+            // Click to apply date
+            textToDate.Click();
         }
 
         // Input value into textarea Comment
@@ -116,6 +159,24 @@ namespace OrangeHRM.Pages
             dropdownLeaveType.Click();
             // Click value option match
             OptionLeaveType(leaveTypeValue).Click();
+        }
+
+        // Chose value from Partial Days
+        public void ChooseDropDownPartialDays(string partialDayValue)
+        {
+            // Click to show value of Leave Type
+            dropdownPartialDays.Click();
+            // Click value option match
+            OptionPartialDays(partialDayValue).Click();
+        }
+
+        // Chose value from Partial Days
+        public void ChooseDropDownDuration(string durationValue)
+        {
+            // Click to show value of Leave Type
+            dropdownDuration.Click();
+            // Click value option match
+            OptionDuration(durationValue).Click();
         }
 
         // Click on button Assign
@@ -134,6 +195,27 @@ namespace OrangeHRM.Pages
         public bool isMessageSuccessDisplay()
         {
             return messSuccess.Displayed;
+        }
+
+        // Check Message Required is displayed
+        public bool isRequiredMessageDisplayed_EmpName()
+        {
+            return messRequiredEmpName.Displayed;
+        }
+
+        public bool isRequiredMessageDisplayed_LeaveType()
+        {
+            return messRequiredLeaveType.Displayed;
+        }
+
+        public bool isRequiredMessageDisplayed_FromDate()
+        {
+            return messRequiredFromDate.Displayed;
+        }
+
+        public bool isRequiredMessageDisplayed_ToDate()
+        {
+            return messRequiredToDate.Displayed;
         }
     }
 }

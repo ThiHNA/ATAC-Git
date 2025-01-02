@@ -25,66 +25,71 @@ namespace OrangeHRM.Test
         [TestMethod("TC01: Verify succesful login with valid username and password")]
         public void Verify_Positive_LoginTest()
         {
-            // Login with correct username and password
+            // Step 1: Input valid username into Username field
+            // Step 2: Input valid password into Password field
+            // Step 3: Click button Login
             loginPage.Login_Successful();
 
             // Log info
             reportHelper.LogMessage("Info", "Login with username: " + ConfigurationHelper.GetValue<string>("username"));
             reportHelper.LogMessage("Info", "Login with password: " + ConfigurationHelper.GetValue<string>("password"));
 
-            // Set explicit wait and verify Dashboard Page is loaded
+            // Step 4: Verify Dashboard Page is loaded
             basePage.WaitUntil(driver => dashboardPage.IsAttendanceChartDisplayed(), 15);
         }
 
         [TestMethod("TC02: Verify unsuccesful login with invalid username and valid password")]
         public void Verify_Negative_UsernameTest()
         {
-            // Generate a random invalid username
+            // Pre-condition
             string invalidUsername = "User" + new Random().Next(1000, 9999);
-
-            // Read configuration to get valid password
             string password = ConfigurationHelper.GetValue<string>("password");
 
             // Log info
             reportHelper.LogMessage("Info", "Login with username: " + invalidUsername);
             reportHelper.LogMessage("Info", "Login with password: " + password);
 
-            // Type incorrect username and correct password -> click Login
+            // Step 1: Input invalid username into Username field
+            // Step 2: Input valid password into Password field
             loginPage.EnterUsernamePassword(invalidUsername, password);
+
+            // Step 3: Click button Login
             loginPage.ClickButtonLogin();
 
-            // Verify message can't login is displayed
+            // Step 4: Verify message can't login is displayed
             loginPage.IsMessErrorDisplayed();
         }
 
-        [TestMethod("TC02: Verify unsuccesful login with valid username and invalid password")]
+        [TestMethod("TC03: Verify unsuccesful login with valid username and invalid password")]
         public void Verif_Negative_PasswordTest()
         {
-            // Read configuration to get valid username
+            // Pre-condition
             string username = ConfigurationHelper.GetValue<string>("username");
-
-            // Generate a random invalid password
             string invalidPassword = "admin" + new Random().Next(1000, 9999);
 
             // Log info
             reportHelper.LogMessage("Info", "Login with username: " + username);
             reportHelper.LogMessage("Info", "Login with password: " + invalidPassword);
 
-            // Type incorrect username and correct password -> click Login
+            // Step 1: Input valid username into Username field
+            // Step 2: Input invalid password into Password field
             loginPage.EnterUsernamePassword(username, invalidPassword);
+
+            // Step 3: Click button Login
             loginPage.ClickButtonLogin();
 
-            // Verify message can't login is displayed
+            // Step 4: Verify message can't login is displayed
             loginPage.IsMessErrorDisplayed();
         }
 
         [TestMethod("TC03: Verify username and password is required")]
         public void Verify_UsernamePassword_Required()
         {
-            // Do not input username and password, then click Login
+            // Step 1: Not input username and password
+            // Step 2: Click button Login
             loginPage.ClickButtonLogin();
 
-            // Verify text "Required" of username and password is displayed
+            // Step 3: Verify text "Required" of username and password is displayed
             loginPage.IstextUserNameRequiredDisplayed();
             loginPage.IstextPasswordRequiredDisplayed();
         }
