@@ -96,6 +96,10 @@ namespace OrangeHRM.Pages
         public void EnterFromDate_ToDate(string fromDate, string toDate)
         {
             fieldFromDate.SendKeys(fromDate);
+            if (toDate != null)
+            {
+                fieldToDate.Clear();
+            }
             fieldToDate.SendKeys(toDate);
         }
 

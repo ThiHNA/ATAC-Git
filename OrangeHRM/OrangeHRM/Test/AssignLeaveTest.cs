@@ -40,37 +40,59 @@ namespace OrangeHRM.Test
             Dictionary<string, string> defaultValueDict = assignLeavePage.GetDefaultValue();
             // Verify default value of Employee Name
             defaultValueDict["def_PlaceholderValue"].ShouldBeEqualTo("Type for hints...");
+
             // Verify default value of Leave Type
             defaultValueDict["def_DropdownValue"].ShouldBeEqualTo("-- Select --");
+
             // Verify default value of Leave Balance
             defaultValueDict["def_TextValue"].ShouldBeEqualTo("0.00 Day(s)");
+
             // Verify default value of From Date
             defaultValueDict["def_FromDateValue"].ShouldBeEqualTo("yyyy-dd-mm");
+
             // Verify default value of To Date
             defaultValueDict["def_ToDateValue"].ShouldBeEqualTo("yyyy-dd-mm");
+
             // Verify default value of Comment
             defaultValueDict["def_CommentValue"].ShouldBeEqualTo("");
-
         }
 
-        [TestMethod("TC02: Verify assign leave for emp success")]
-        public void Verify_Positive_AssignLeaveTest()
+        [TestMethod("TC02: Verify assign 1 day leave for employee success")]
+        public void Verify_Positive_AssignOneDayLeaveTest()
         {
             // Input value into Employee Name
             assignLeavePage.EnterEmployeeName("Ranga");
+
             // Chose value option of Leave Type
             assignLeavePage.ChooseDropDownLeaveType("CAN - Personal");
+
             // Input value into From Date and To Date
             assignLeavePage.EnterFromDate_ToDate("2024-30-12", "");
+
             // Input value into Comment
             assignLeavePage.EnterComment("Leave to takecare child");
+
             // Click button Assign
             assignLeavePage.ClickButtonAssign();
+
             // Click button Ok on alert Confirm
             assignLeavePage.AcceptAssignLeave();
 
             // Verify message success is display
             basePage.WaitUntil(driver => assignLeavePage.isMessageSuccessDisplay(), 100);
+        }
+
+        [TestMethod("TC03: Verify assign period leave for employee success")]
+        public void Verify_Positive_AssignPeriodLeaveTest()
+        {
+            // Input value into Employee Name
+            assignLeavePage.EnterEmployeeName("Ranga");
+
+            // Chose value option of Leave Type
+            assignLeavePage.ChooseDropDownLeaveType("CAN - Personal");
+
+            // Input value into From Date and To Date
+            assignLeavePage.EnterFromDate_ToDate("2025-06-01", "2025-10-01");
         }
     }
 }
