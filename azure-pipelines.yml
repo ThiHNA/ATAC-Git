@@ -12,6 +12,9 @@ steps:
     packageType: 'sdk'
     version: '8.x'  # Adjust for your .NET SDK version
     installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dir
+  displayName: 'List Files in Repository'
  
 # Restore dependencies
 - script: dotnet restore $(solution)
