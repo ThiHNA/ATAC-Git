@@ -23,6 +23,7 @@ namespace OrangeHRM.Test
         }
 
         [TestMethod("TC01: Verify succesful login with valid username and password")]
+        [TestCategory("SmokeTest")]
         public void Verify_Positive_LoginTest()
         {
             // Step 1: Input valid username into Username field
