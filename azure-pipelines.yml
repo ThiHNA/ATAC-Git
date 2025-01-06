@@ -3,7 +3,7 @@ pool:
   demands: agent.name -equals MyDesktop
 variables:
   buildConfiguration: 'Debug'  # Set build configuration
-  solution: 'OrangeHRM.sln'  # Solution file location
+  solution: 'OrangeHRM/OrangeHRM.sln'  # Solution file location
  
 steps:
 # Use the latest .NET SDK
