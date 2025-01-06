@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- US001
+
+pool:
+  name: 'MyPool'  # Use your defined agent pool
+  demands: agent.name -equals MyDesktop
+variables:
+  buildConfiguration: 'Debug'  # Set build configuration
+  solution: 'OrangeHRM.sln'  # Solution file location
+ 
+steps:
+# Use the latest .NET SDK
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '9.x'  # Adjust for your .NET SDK version
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+ 
+# Restore dependencies
+- script: dotnet restore $(solution)
+  displayName: 'Restore Dependencies'
+ 
+# Build the solution
+- script: dotnet build $(solution) --configuration $(buildConfiguration) --no-restore
+  displayName: 'Build Solution'
+ 
+# Run Unit Tests
+- script: dotnet test $(solution) --configuration $(buildConfiguration) --no-build --logger trx
+  displayName: 'Run Unit Tests'
