@@ -10,7 +10,7 @@ namespace OrangeHRM.Test
     public class BaseTest : IDisposable
     {
         protected IWebDriver driver;
-        protected ReportHelper reportHelper;
+        protected static ReportHelper reportHelper;
 
         public TestContext TestContext { get; set; }
 
@@ -20,7 +20,11 @@ namespace OrangeHRM.Test
             string browserType = ConfigurationHelper.GetValue<string>("browser");
             int timeout = ConfigurationHelper.GetValue<int>("timeout");
             driver = DriverFactory.InitBrowser(browserType, timeout);
+        }
 
+        [ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
+        public static void InitReport(TestContext context)
+        {
             //Init report helper
             reportHelper = new ReportHelper();
         }
