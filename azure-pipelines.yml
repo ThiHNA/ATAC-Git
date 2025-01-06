@@ -15,6 +15,7 @@ steps:
  
 # Restore dependencies
 - script: dotnet restore $(solution)
+  workingDirectory: $(Build.SourcesDirectory)
   displayName: 'Restore Dependencies'
  
 # Build the solution
