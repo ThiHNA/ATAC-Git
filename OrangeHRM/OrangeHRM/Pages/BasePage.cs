@@ -13,6 +13,7 @@ namespace OrangeHRM.Pages
 
         // Web Element
         private IWebElement leftMenuItemLeave => driver.FindElement(By.XPath("//span[text() = 'Leave']/.."));
+        private Func<string, IWebElement> OptionSubLeavePage => subLeavePage => driver.FindElement(By.XPath($"//a[text() = '{subLeavePage}']"));
 
 
         // Explicit wait common
@@ -24,6 +25,12 @@ namespace OrangeHRM.Pages
         public void Goto_LeavePage()
         {
             leftMenuItemLeave.Click();
+        }
+
+        public void Goto_SubLeavePage(string subLeavePage)
+        {
+            WaitUntil(driver => OptionSubLeavePage(subLeavePage).Displayed, 100);
+            OptionSubLeavePage(subLeavePage).Click();  
         }
     }
 }
