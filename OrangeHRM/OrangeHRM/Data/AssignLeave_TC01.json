@@ -1,0 +1,8 @@
+{
+    "EmployeeNamePlaceholder": "Type for hints...",
+    "LeaveTypeDropdown": "-- Select --",
+    "LeaveBalanceText": "0.00 Day(s)",
+    "FromDatePlaceholder": "yyyy-dd-mm",
+    "ToDatePlaceholder": "yyyy-dd-mm",
+    "CommentText": ""
+}

@@ -4,17 +4,30 @@ namespace Automation.Core.Helpers
 {
     public class JsonHelper
     {
-        public static T ReadJsonFromString<T>(string jsonData)
+        //public static T ReadJsonFromString<T>(string jsonData)
+        //{
+        //    try
+        //    {
+        //        T result = JsonConvert.DeserializeObject<T>(jsonData);
+        //        return result;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+        //        throw;
+        //    }
+        //}
+
+        public static T ReadJsonFile<T>(string filePath)
         {
             try
             {
-                T result = JsonConvert.DeserializeObject<T>(jsonData);
-                return result;
+                string jsonData = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<T>(jsonData);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deserializing JSON: {ex.Message}");
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿using FluentAssert;
+using Microsoft.IdentityModel.Tokens;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using OrangeHRM.Model;
 
 namespace OrangeHRM.Pages
 {
@@ -12,9 +14,6 @@ namespace OrangeHRM.Pages
         }
 
         // Web Element
-        // Tab Assign Leave on top menu
-        private IWebElement topMenuAssignLeave => driver.FindElement(By.XPath("//a[text() = 'Assign Leave']"));
-
         // Title Assign Leave
         private IWebElement assignLeaveTitle => driver.FindElement(By.XPath("//h6[text()= 'Assign Leave']"));
 
@@ -78,11 +77,20 @@ namespace OrangeHRM.Pages
         // Message Success
         private IWebElement messSuccess => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--success oxd-toast-container--toast']"));
 
+        // Message Warning
+        private IWebElement messWarning => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--warn oxd-toast-container--toast']"));
+
+        // Message Error
+        private IWebElement messError => driver.FindElement(By.XPath("//div[@class='oxd-toast oxd-toast--error oxd-toast-container--toast']"));
+
+        // Message check To Date
+        private IWebElement messToDate => driver.FindElement(By.XPath("//span[text() = 'To date should be after from date']"));
+
         // Method Interact
         // Navigate to Assign Page
         public void Goto_AssignLeavePage() 
         {
-            topMenuAssignLeave.Click();
+            Goto_SubLeavePage("Assign Leave");
         }
 
         // Check Assign Leave title is displayed
@@ -126,9 +134,8 @@ namespace OrangeHRM.Pages
             fieldEmpName.SendKeys(empName);
 
             // Wait until suggest Employee is displayed and click
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100));
-            IWebElement option = wait.Until(driver => OptionEmpName(empName));
-            option.Click();
+            WaitUntil(driver => OptionEmpName(empName).Displayed, 100);
+            OptionEmpName(empName).Click();
         }
 
         // Input value into field From Date and To Date
@@ -191,10 +198,34 @@ namespace OrangeHRM.Pages
             buttonConfirmOk.Click();
         }
 
-        // Check Message Success is displayed
-        public bool isMessageSuccessDisplay()
+        // Check Message Result is displayed
+        public bool isMessageResultDisplay(IWebElement messElement)
         {
-            return messSuccess.Displayed;
+            try
+            {
+                WaitUntil(drive => messElement.Displayed, 100);
+                return true;
+            }
+            catch (WebDriverTimeoutException)
+            {
+                return false;
+            }
+        }
+
+        // Check Message Success is displayed
+        public bool isMessageSuccDisplay()
+        {
+            return isMessageResultDisplay(messSuccess);
+        }
+
+        public bool isMessageWarnDisplay()
+        {
+            return isMessageResultDisplay(messWarning);
+        }
+
+        public bool isMessageErrorDisplay()
+        {
+            return isMessageResultDisplay(messError);
         }
 
         // Check Message Required is displayed
@@ -202,7 +233,6 @@ namespace OrangeHRM.Pages
         {
             return messRequiredEmpName.Displayed;
         }
-
         public bool isRequiredMessageDisplayed_LeaveType()
         {
             return messRequiredLeaveType.Displayed;
@@ -216,6 +246,37 @@ namespace OrangeHRM.Pages
         public bool isRequiredMessageDisplayed_ToDate()
         {
             return messRequiredToDate.Displayed;
+        }
+
+        // Check message To Date greater than From Date is displayed
+        public bool isCheckDateMessageDisplayed()
+        {
+            return messToDate.Displayed;
+        }
+
+        public void ExcuteAssignLeave(AssignLeaveModel leaveInfo)
+        {
+            EnterEmployeeName(leaveInfo.EmployeeName); 
+            ChooseDropDownLeaveType(leaveInfo.LeaveType);
+            EnterFromDate_ToDate(leaveInfo.FromDate, leaveInfo.ToDate);
+            if (!leaveInfo.PartialDays.IsNullOrEmpty())
+            {
+                ChooseDropDownPartialDays(leaveInfo.PartialDays);
+            }
+
+            if (!leaveInfo.Duration.IsNullOrEmpty())
+            {
+                ChooseDropDownDuration(leaveInfo.Duration);
+            }
+
+            if (!leaveInfo.Comment.IsNullOrEmpty())
+            {
+                EnterComment(leaveInfo.Comment);
+            }
+
+            ClickButtonAssign();
+
+            AcceptAssignLeave();
         }
     }
 }

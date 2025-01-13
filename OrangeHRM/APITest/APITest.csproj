@@ -27,4 +27,10 @@
     <ProjectReference Include="..\Automation.Core\Automation.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\API_UserToCreate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

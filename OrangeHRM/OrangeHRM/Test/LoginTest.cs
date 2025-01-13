@@ -23,15 +23,14 @@ namespace OrangeHRM.Test
         }
 
         [TestMethod("TC01: Verify succesful login with valid username and password")]
-        [TestCategory("SmokeTest")]
         public void Verify_Positive_LoginTest()
         {
             // Step 1: Input valid username into Username field
             // Step 2: Input valid password into Password field
             // Step 3: Click button Login
             loginPage.Login_Successful();
-
-            // Log info
+            
+            // Log info for ExtendReport
             reportHelper.LogMessage("Info", "Login with username: " + ConfigurationHelper.GetValue<string>("username"));
             reportHelper.LogMessage("Info", "Login with password: " + ConfigurationHelper.GetValue<string>("password"));
 
@@ -46,7 +45,7 @@ namespace OrangeHRM.Test
             string invalidUsername = "User" + new Random().Next(1000, 9999);
             string password = ConfigurationHelper.GetValue<string>("password");
 
-            // Log info
+            // Log info for ExtendReport
             reportHelper.LogMessage("Info", "Login with username: " + invalidUsername);
             reportHelper.LogMessage("Info", "Login with password: " + password);
 
@@ -68,7 +67,7 @@ namespace OrangeHRM.Test
             string username = ConfigurationHelper.GetValue<string>("username");
             string invalidPassword = "admin" + new Random().Next(1000, 9999);
 
-            // Log info
+            // Log info for ExtendReport
             reportHelper.LogMessage("Info", "Login with username: " + username);
             reportHelper.LogMessage("Info", "Login with password: " + invalidPassword);
 
@@ -94,5 +93,5 @@ namespace OrangeHRM.Test
             loginPage.IstextUserNameRequiredDisplayed();
             loginPage.IstextPasswordRequiredDisplayed();
         }
-    }
+    } 
 }

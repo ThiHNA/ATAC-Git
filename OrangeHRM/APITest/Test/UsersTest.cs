@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using APITest.Data;
 using APITest.Model;
 using Automation.Core.Helpers;
 using FluentAssertions;
@@ -35,8 +34,11 @@ namespace APITest.Test
         [TestMethod]
         public void Verify_Create_User()
         {
+            // Declare JsonPath
+            string jsonPath = "Data/API_UserToCreate.json";
+
             // Read JSON data for creating a user from the JsonData class
-            CreateUserRequestModel requestBody = JsonHelper.ReadJsonFromString<CreateUserRequestModel>(JsonData.UserToCreate);
+            CreateUserRequestModel requestBody = JsonHelper.ReadJsonFile<CreateUserRequestModel>(jsonPath);
 
             // Make a POST request to the API to create a new user
             RestResponse response = APIHelper.HandleMethodPost("/api/users", requestBody);
@@ -45,6 +47,7 @@ namespace APITest.Test
             response.StatusCode.Should().Be(HttpStatusCode.Created);
 
             // Verify that the name and job in the response matches with the request body
+            //var responseData = JsonHelper.ReadJsonFromString<CreateUserReponseModel>(response.Content);
             var responseData = JsonConvert.DeserializeObject<CreateUserReponseModel>(response.Content);
             responseData.name.Should().Be(requestBody.name);
             responseData.job.Should().Be(requestBody.job);
